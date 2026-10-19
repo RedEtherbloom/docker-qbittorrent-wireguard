@@ -5,6 +5,7 @@ if [[ ! -e /config/qBittorrent/config ]]; then
 fi
 # Set the correct rights accordingly to the PUID and PGID on /config/qBittorrent
 chown -R ${PUID}:${PGID} /config/qBittorrent
+chown -R ${PUID}:${PGID} /downloads
 
 ##Disabling this because the downloads folder is my whole NAS and file ownerships are already managed by ACL.
 # Set the rights on the /downloads folder

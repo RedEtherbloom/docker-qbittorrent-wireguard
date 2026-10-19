@@ -35,3 +35,11 @@ services:
       - "/mnt/cryptostorage/inf/Torrent/docker-qbittorrent-wireguard-download:/downloads"
       - "/home/inf/Projects/docker-qbittorrent-wireguard/config:/config"
     working_dir: "/opt"
+    x-podman.uidmaps:
+      - "0:1:999"
+      - "1000:0:1"
+      - "1001:1000:64536"
+    x-podman.gidmaps:
+      - "0:1:99"
+      - "100:0:1"
+      - "101:100:64536"
