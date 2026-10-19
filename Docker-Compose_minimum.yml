@@ -7,18 +7,22 @@ services:
       - "/bin/bash"
       - "/start.sh"
     environment:
-      - "PUID=1234"
-      - "PGID=567"
-      - "LAN_NETWORK=192.168.1.0/24"
+      - "PUID=1000"
+      - "PGID=100"
+      - "LAN_NETWORK=192.168.190.0/24"
       - "QBT_LEGAL_NOTICE=confirm"
-    image: "docker.io/tenseiken/qbittorrent-wireguard:latest"
+      - "ENABLE_SSL=no"
+      - "HEALTH_CHECK_HOST=one.one.one.one"
+      - "HEALTH_CHECK_INTERVAL=15"
+      - "HEALTH_CHECK_AMOUNT=3"
+      - "HEALTH_CHECK_SILENT=0"
+      - "RESTART_CONTAINER=no"
+    build: ./.
     ipc: "private"
     network_mode: "bridge"
-    ports:
-      - "8999:8999/tcp"
-      - "8999:8999/udp"
-      - "8080:8080/tcp"
     restart: "unless-stopped"
+    ports:
+      - "8180:8080/tcp"
     security_opt:
       - "label=disable"
     stdin_open: true
@@ -28,6 +32,6 @@ services:
       - "net.ipv6.conf.all.disable_ipv6=1"
     tty: true
     volumes:
-      - "/host/path/to/downloads:/downloads"
-      - "/host/path/to/config:/config"
+      - "/mnt/cryptostorage/inf/Torrent/docker-qbittorrent-wireguard-download:/downloads"
+      - "/home/inf/Projects/docker-qbittorrent-wireguard/config:/config"
     working_dir: "/opt"
