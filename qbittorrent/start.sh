@@ -168,7 +168,7 @@ if [ -e /proc/$qbittorrentpid ]; then
 			qbittorrentpid=$(pgrep -f "qbittorrent-nox")
 		fi
 		# Ping uses both exit codes 1 and 2. Exit code 2 cannot be used for docker health checks, therefore we use this script to catch error code 2
-		ping -c ${HEALTH_CHECK_AMOUNT} $HOST >/dev/null 2>&1
+		ping -c "${HEALTH_CHECK_AMOUNT}" "$HOST" >/dev/null 2>&1
 		STATUS=$?
 		if [[ "${STATUS}" -ne 0 ]]; then
 			echo "[ERROR] Network is possibly down." | ts '%Y-%m-%d %H:%M:%.S'

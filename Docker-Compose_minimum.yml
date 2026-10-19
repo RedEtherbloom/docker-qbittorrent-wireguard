@@ -2,6 +2,7 @@ services:
   qbittorrent-wireguard:
     cap_add:
       - "NET_ADMIN"
+      - "NET_RAW"
     container_name: "qbittorrent-wireguard"
     entrypoint:
       - "/bin/bash"
