@@ -18,6 +18,7 @@ services:
       - "HEALTH_CHECK_AMOUNT=3"
       - "HEALTH_CHECK_SILENT=0"
       - "RESTART_CONTAINER=no"
+      - "TZ=Etc/UTC"
     build: ./.
     ipc: "private"
     network_mode: "bridge"
@@ -34,13 +35,45 @@ services:
     tty: true
     volumes:
       - "/mnt/cryptostorage/inf/Torrent/docker-qbittorrent-wireguard-download:/downloads"
-      - "/home/inf/Projects/docker-qbittorrent-wireguard/config:/config"
+      - "/home/inf/Projects/docker-qbittorrent-wireguard/qbittorrent_config:/config"
     working_dir: "/opt"
-    x-podman.uidmaps:
+    x-podman.uidmaps: &uidmap
       - "0:1:999"
       - "1000:0:1"
       - "1001:1000:64536"
-    x-podman.gidmaps:
+    x-podman.gidmaps: &gidmap
       - "0:1:99"
       - "100:0:1"
       - "101:100:64536"
+  lidarr:
+    image: lscr.io/linuxserver/lidarr:latest
+    container_name: lidarr
+    network_mode: "bridge"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - /home/inf/Projects/docker-qbittorrent-wireguard/lidarr_config:/config
+      - /mnt/cryptostorage/inf/Media Library/Lidarr Music:/music #optional
+      - /mnt/cryptostorage/inf/Torrent/docker-qbittorrent-wireguard-download:/downloads #optional
+    ports:
+      - 8686:8686
+    restart: unless-stopped
+    x-podman.uidmaps: *uidmap
+    x-podman.gidmaps: *gidmap
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    network_mode: "bridge"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - /home/inf/Projects/docker-qbittorrent-wireguard/prowlarr_config:/config
+    ports:
+      - 9696:9696
+    restart: unless-stopped
+    x-podman.uidmaps: *uidmap
+    x-podman.gidmaps: *gidmap
